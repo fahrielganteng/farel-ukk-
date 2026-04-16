@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - HeavyRent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --sidebar-color: #1e293b;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 250px;
+            background-color: var(--sidebar-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+        }
+
+        .logo {
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #38bdf8;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left-color: #38bdf8;
+        }
+
+        /* Main Content */
+        main {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .bg-blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .bg-green {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .bg-yellow {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Table Section */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 10px;
+            border-bottom: 2px solid #e2e8f0;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-tersedia {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-dipinjam {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .action-btns button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .btn-edit {
+            color: #3b82f6;
+        }
+
+        .btn-delete {
+            color: #ef4444;
+        }
+
+        .btn-edit:hover {
+            background: #eff6ff;
+        }
+
+        .btn-delete:hover {
+            background: #fef2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside>
+        <div class="logo">
+            <i class="fa-solid fa-truck-monster"></i> HeavyRent
+        </div>
+        <div class="nav-menu">
+            <a href="#" class="nav-item active"><i class="fa-solid fa-border-all"></i> Dashboard</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-list"></i> Kategori</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-truck"></i> Data Alat</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-clipboard-list"></i> Peminjaman</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-rotate-left"></i> Pengembalian</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Users</a>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <div class="search" style="color:var(--text-muted)"><i class="fa-solid fa-search"></i> Cari data...</div>
+            <div class="user-profile">
+                <span>Admin Utama</span>
+                <img src="https://ui-avatars.com/api/?name=Admin+Utama&background=2563eb&color=fff" alt="Admin">
+            </div>
+        </header>
+
+        <div class="content">
+            <h1 class="page-title">Dashboard Overview</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue"><i class="fa-solid fa-truck"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Alat Berat</h3>
+                        <p>24 Unit</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-yellow"><i class="fa-solid fa-clipboard-list"></i></div>
+                    <div class="stat-info">
+                        <h3>Sedang Dipinjam</h3>
+                        <p>8 Unit</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <h3>Pendapatan Bulan Ini</h3>
+                        <p>Rp 45M</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>Data Alat Berat Terbaru</h2>
+                    <button class="btn-add"><i class="fa-solid fa-plus"></i> Tambah Alat</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Info Alat</th>
+                            <th>Kategori</th>
+                            <th>Harga Sewa</th>
+                            <th>Stok</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>EXC-001</strong></td>
+                            <td>
+                                <div class="item-info">
+                                    <img src="https://images.unsplash.com/photo-1541888081699-31ff50ad146e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                        alt="excavator">
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--text-main);">Excavator PC200</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">Komatsu • 2021</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Excavator</td>
+                            <td>Rp 2.500.000 /hr</td>
+                            <td>3 / 5</td>
+                            <td><span class="status-badge status-tersedia">Tersedia</span></td>
+                            <td class="action-btns">
+                                <button class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>BLD-002</strong></td>
+                            <td>
+                                <div class="item-info">
+                                    <img src="https://images.unsplash.com/photo-1574513149844-3c6f9eebbccb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                        alt="bulldozer">
+                                    <div>
+                                        <div style="font-weight: 700; color: var(--text-main);">Bulldozer D8T</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">Caterpillar • 2019
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Bulldozer</td>
+                            <td>Rp 3.800.000 /hr</td>
+                            <td>0 / 2</td>
+                            <td><span class="status-badge status-dipinjam">Dipinjam</span></td>
+                            <td class="action-btns">
+                                <button class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
